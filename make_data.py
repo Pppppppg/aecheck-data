@@ -20,7 +20,7 @@ for row in char_sheet.rows:
     filename = "{}{}_command.png".format(row[3].value, IMG_TAG.get(str(row[2].value), "jsalkjdakljdlajdalkd"))
     
     # 테일즈 캐릭터는 5성 이미지만 있어서 보정
-    if row[1].value in ["클레스", "유리", "미라", "벨벳"] and row[2].value=="4.5":
+    if row[1].value in ["클레스", "유리", "미라", "벨벳"] and str(row[2].value)=="4.5":
         filename = filename.replace("command", "rank5_command")
     
     # 아이디대로 이미지를 복사
