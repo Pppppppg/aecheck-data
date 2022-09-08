@@ -11,7 +11,7 @@ char_sheet = workbook["캐릭터"]
 dun_sheet = workbook["던전"]
 per_sheet = workbook["퍼스널리티"]
 
-for name in ["character", "personality", "result_json"]:
+for name in ["character", "personality", "result_json", "result_json/language"]:
     make_folder(name)
 
 

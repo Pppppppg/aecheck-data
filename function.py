@@ -29,7 +29,7 @@ def add_data_to_sheet(tag: str, sheet, data_list):
     # 1. 번역 시트의 첫 열은 한국어입니다.
     sheet_list = [i[0].value for i in sheet.iter_rows(min_row=2)]
     
-    for key in data_list:
+    for key in list(set(data_list)):
         if key not in sheet_list:
             print("새로 등록, 번역 확인 필요 : {} - {}".format(tag, key))
             sheet.append([key])
