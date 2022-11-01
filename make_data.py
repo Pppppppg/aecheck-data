@@ -35,7 +35,7 @@ for row in buddy_sheet.rows:
     # 아이디대로 이미지를 복사
     for file in os.listdir(IMG_ROOT):
         if filename in file:
-            shutil.copyfile("rawimage/" + file, "buddy/{}.png".format(row[1].value))
+            shutil.copyfile("rawimage/" + file, "buddy/{}.png".format(row[0].value))
 
 
 # 2. 퍼스널리티 이미지 저장
