@@ -14,6 +14,14 @@ print("대상 캐릭터", len(char_list), "명")
 
 add_data_to_sheet("캐릭터", workbook["캐릭번역"], char_list)
 
+# 1-2. 버디 이름 번역
+# 모든 버디 이름들을 모아서 중복을 제거한 배열을 생성
+per_sheet = workbook["버디"]
+buddy_list = list(set([i[1].value for i in per_sheet.iter_rows(min_row=2)]))
+print("대상 버디", len(buddy_list), "종")
+
+add_data_to_sheet("버디", workbook["캐릭번역"], buddy_list)
+
 
 # 2. 직업서 번역
 char_sheet = workbook["캐릭터"]

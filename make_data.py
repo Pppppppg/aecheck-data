@@ -8,10 +8,11 @@ from function import make_folder, write_json
 
 workbook = load_workbook(FILE_NAME, data_only=True)
 char_sheet = workbook["캐릭터"]
+buddy_sheet = workbook["버디"]
 dun_sheet = workbook["던전"]
 per_sheet = workbook["퍼스널리티"]
 
-for name in ["character", "personality", "result_json", "result_json/language"]:
+for name in ["character", "buddy", "personality", "result_json", "result_json/language"]:
     make_folder(name)
 
 
@@ -27,6 +28,14 @@ for row in char_sheet.rows:
     for file in os.listdir(IMG_ROOT):
         if filename in file:
             shutil.copyfile("rawimage/" + file, "character/{}.png".format(row[0].value))
+
+# 1-2. 버디 이미지 저장
+for row in buddy_sheet.rows:
+    filename = "{}.png".format(row[2].value)
+    # 아이디대로 이미지를 복사
+    for file in os.listdir(IMG_ROOT):
+        if filename in file:
+            shutil.copyfile("rawimage/" + file, "buddy/{}.png".format(row[1].value))
 
 
 # 2. 퍼스널리티 이미지 저장
@@ -68,6 +77,23 @@ for row in char_sheet.iter_rows(min_row=2):
 
 write_json('result_json/character.json', char_arr)
 
+# 3-2. buddy.json
+buddy_arr = []
+
+for row in buddy_sheet.iter_rows(min_row=2):
+    if not row[0].value:  continue
+    dic = {
+        "id": row[0].value,
+        "code": str(row[2].value),
+        "from": list(map(int, str(row[3].value).split(","))) if row[3].value else [],
+        "free": row[4].value,
+        "jonly": row[5].value,
+        "gonly": row[6].value,
+    }
+    buddy_arr.append(dic)
+
+write_json('result_json/buddy.json', buddy_arr)
+
 
 # 4. 번역 json
 kor_json = {}
@@ -95,6 +121,18 @@ for row in desc_trans_sheet.iter_rows(min_row=2):
 # 캐릭터 이름 번역
 for row in char_sheet.iter_rows(min_row=2):
     kor_json[str(row[3].value)] = row[1].value
+
+char_trans_sheet = workbook["캐릭번역"]
+for row in char_trans_sheet.iter_rows(min_row=2):
+    for key in kor_json.keys():
+        if kor_json[key] == row[0].value:
+            eng_json[key] = row[1].value
+            jap_json[key] = row[2].value
+
+# 버디 이름 번역
+for row in buddy_sheet.iter_rows(min_row=2):
+    if not row[0].value: continue
+    kor_json[str(row[2].value)] = row[1].value
 
 char_trans_sheet = workbook["캐릭번역"]
 for row in char_trans_sheet.iter_rows(min_row=2):
