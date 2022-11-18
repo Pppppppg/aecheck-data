@@ -12,11 +12,13 @@ buddy_sheet = workbook["버디"]
 dun_sheet = workbook["던전"]
 per_sheet = workbook["퍼스널리티"]
 
+
 for name in ["character", "buddy", "personality", "result_json", "result_json/language"]:
     make_folder(name)
 
-
-# 1. 캐릭터 이미지 저장
+"""
+캐릭터 이미지 저장
+"""
 for row in char_sheet.rows:
     filename = "{}{}_command.png".format(row[3].value, IMG_TAG.get(str(row[2].value), "jsalkjdakljdlajdalkd"))
     
@@ -29,7 +31,10 @@ for row in char_sheet.rows:
         if filename in file:
             shutil.copyfile("rawimage/" + file, "character/{}.png".format(row[0].value))
 
-# 1-2. 버디 이미지 저장
+
+"""
+버디 이미지 저장
+"""
 for row in buddy_sheet.rows:
     filename = "{}.png".format(row[2].value)
     # 아이디대로 이미지를 복사
@@ -38,9 +43,11 @@ for row in buddy_sheet.rows:
             shutil.copyfile("rawimage/" + file, "buddy/{}.png".format(row[0].value))
 
 
-# 2. 퍼스널리티 이미지 저장
+"""
+퍼스널리티 이미지 저장
+"""
 for row in per_sheet.rows:    
-    # 코드대로 이미지를 복사
+    # 이름으로 이미지를 복사
     for file in os.listdir(IMG_ROOT):
         if str(row[4].value) in file and ".png" in file:
             if row[1].value and "s3" in file:
@@ -50,7 +57,9 @@ for row in per_sheet.rows:
                 shutil.copyfile("rawimage/" + file, "personality/{}.png".format(row[0].value))
 
 
-# 3. character.json
+"""
+character.json
+"""
 char_arr = []
 codes = []
 
@@ -77,7 +86,10 @@ for row in char_sheet.iter_rows(min_row=2):
 
 write_json('result_json/character.json', char_arr)
 
-# 3-2. buddy.json
+
+"""
+buddy.json
+"""
 buddy_arr = []
 
 for row in buddy_sheet.iter_rows(min_row=2):
@@ -95,7 +107,9 @@ for row in buddy_sheet.iter_rows(min_row=2):
 write_json('result_json/buddy.json', buddy_arr)
 
 
-# 4. 번역 json
+"""
+번역 json
+"""
 kor_json = {}
 eng_json = {}
 jap_json = {}
@@ -157,7 +171,9 @@ write_json('result_json/language/en.json', eng_json)
 write_json('result_json/language/jp.json', jap_json)
 
 
-# 5. dungeon.json
+"""
+dungeon.json
+"""
 dun_arr = list(map(lambda row: {
     "name": row[0].value,
     "endpoint": row[3].value
@@ -167,7 +183,9 @@ dun_sheet.iter_rows(min_row=2)))
 write_json('result_json/dungeon.json', dun_arr)
 
 
-# 6. personality.json
+"""
+personality.json
+"""
 per_arr = list(map(lambda row: {
     "name": row[0].value,
     "is_extra": row[1].value,
