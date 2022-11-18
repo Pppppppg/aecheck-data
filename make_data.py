@@ -16,6 +16,7 @@ per_sheet = workbook["퍼스널리티"]
 for name in ["character", "buddy", "personality", "result_json", "result_json/language"]:
     make_folder(name)
 
+
 """
 캐릭터 이미지 저장
 """
